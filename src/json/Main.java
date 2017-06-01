@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 public class Main {
 	
 	static int xxx=0;
+	static boolean pp=true;
 
 	public Main() {
 		// TODO Auto-generated constructor stub
@@ -36,11 +37,30 @@ public class Main {
 		try {
 			JsonObject o = new JsonObject();
 			JsonArray a=new JsonArray();
+			int i=0;
+			String titulo="";
 			for(int x=0;x<verso.length;x++){
 				JsonObject jsonObject2 = new JsonObject();
-				jsonObject2.addProperty("numero", x+1);
-				jsonObject2.addProperty("texto", verso[x]);
-				a.add(jsonObject2);
+				if(verso[x].length()>0){
+					String v=verso[x].substring(0, 1);
+					if(isNumeric(v)||v.equals(" ")){
+						String ver="";
+						if(v.equals(" ")){
+							ver=verso[x].substring(1);
+						}else{
+							ver=verso[x];
+						}
+						i++;
+						jsonObject2.addProperty("numero", i);
+						jsonObject2.addProperty("texto", ver);
+						jsonObject2.addProperty("titulo", titulo);
+						titulo="";
+						a.add(jsonObject2);
+					}else{
+						titulo=verso[x];
+					}
+				}
+				
 			}
 			o.add("versiculos", a);
 			o.addProperty("numero", xxx);
@@ -98,7 +118,8 @@ public class Main {
 						for(int x=0;x<ll.length;x++){
 							if(!ll[x].equals("")){
 								if(isNumeric(ll[x])){
-									if(text.equals("")){
+									if(pp){
+										pp=false;
 										text=text+"1"+" ";
 										xxx=Integer.valueOf(ll[x]);
 									}else{
